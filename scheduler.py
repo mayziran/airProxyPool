@@ -43,7 +43,7 @@ def run_collector():
 def main():
     # 获取当前脚本所在目录
     current_dir = Path(__file__).parent.absolute()
-    glider_path = current_dir / "glider" / 'glider.exe' if os.name == 'nt' else 'glider'  # glider可执行文件路径
+    glider_path = current_dir / "glider" / ('glider.exe' if os.name == 'nt' else 'glider')  # glider可执行文件路径
     config_path = current_dir / "glider" / "glider.conf"  # 配置文件路径
     # 检查必要文件是否存在
     if not glider_path.exists():
