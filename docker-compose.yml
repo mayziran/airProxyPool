@@ -1,0 +1,35 @@
+# docker-compose.yml 文件版本
+version: "3.8"
+
+services:
+  # 服务名称
+  airproxypool:
+    # 指定容器名称
+    container_name: airProxyPool
+    # 构建指令
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # 挂载卷映射，严格遵循项目根目录结构
+    volumes:
+      - ./glider:/app/glider
+      - ./aggregator/data:/app/aggregator/data
+      - ./subscriptions.txt:/app/subscriptions.txt
+    # 端口映射
+    ports:
+      - "10707:10707" # 映射 aggregator 模式的代理端口
+      - "10710:10710" # 映射 subscription 模式的代理端口
+    # 环境变量配置
+    environment:
+      # --- 核心配置：选择运行模式 ---
+      # RUNMODE=AGG:  仅使用 aggregator 自动抓取的免费节点。
+      # RUNMODE=SUB:  仅使用 subscriptions.txt 中定义的订阅链接。
+      # RUNMODE=BOTH: (默认) 两者都运行。
+      - RUNMODE=BOTH
+      # 代理监听端口
+      - PROXY_PORT_AGG=10707
+      - PROXY_PORT_SUB=10710
+      # 设置时区
+      - TZ=Asia/Shanghai
+    # 重启策略
+    restart: always
